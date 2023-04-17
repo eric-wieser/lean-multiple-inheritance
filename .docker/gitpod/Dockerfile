@@ -22,7 +22,7 @@ RUN curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -
 
 # install whichever toolchain mathlib is currently using
 RUN . ~/.profile && \
-  elan toolchain install $(curl https://raw.githubusercontent.com/leanprover-community/mathlib4/master/lean-toolchain) \
+  elan toolchain install $(curl https://raw.githubusercontent.com/leanprover-community/mathlib4/master/lean-toolchain) && \
   elan toolchain install $(curl https://raw.githubusercontent.com/leanprover-community/mathlib/master/leanpkg.toml | grep lean_version | awk -F'"' '{print $2}')
 # install `leanproject` using `pip`
 RUN python3 -m pip install --user pipx && python3 -m pipx ensurepath && source ~/.profile && pipx install mathlibtools==1.1.1
