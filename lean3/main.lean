@@ -1,10 +1,10 @@
 import tactic
-.
 
-set_option pp.implicit true
+/-! ### Native spelling of flat structures -/
 
 namespace idealized
-  set_option old_strcture_cmd true
+  -- not legal in Lean 3 without this line
+  set_option old_structure_cmd true
 
   class add_monoid (α : Type) :=
   (zero : α) (add : α → α → α)
@@ -22,6 +22,8 @@ namespace idealized
   class ring (α : Type) extends semiring α, add_comm_group α 
 
 end idealized
+
+/-! ### Setup for flat / nested versions -/
 
 namespace flat
   class add_monoid (α : Type) :=
@@ -58,20 +60,6 @@ namespace flat
     (α : Type) [i : ring α] : semiring α := { ..i }
   instance ring.to_add_comm_group
     (α : Type) [i : ring α] : add_comm_group α := { ..i }
-
-  class module (α β : Type) [semiring α] [add_comm_monoid β] :=
-  (smul : α → β → β)
-
-  instance semiring.to_module (α) [semiring α] : module α α := { smul := semiring.mul }
-
-  example (R) [iR : ring R] : module R R := by apply_instance
-
-  lemma neg_smul {R M} [ring R] [add_comm_group M] [module R M] (r : R) (m : M) :
-    module.smul (add_group.neg r) m = add_group.neg (module.smul r m) := sorry
-
-  -- fails
-  example {R} [iR : ring R] (r : R) (r' : R) :
-    module.smul (add_group.neg r) r' = add_group.neg (module.smul r r') := neg_smul r r'
 
 end flat
 
@@ -115,7 +103,32 @@ namespace nested
     { to_add_monoid :=
         i.to_semiring.to_add_comm_monoid.to_add_monoid, ..i },
     .. i }
-  
+
+end nested
+
+/-! ### Problems with `module` -/
+
+namespace flat
+
+  class module (α β : Type) [semiring α] [add_comm_monoid β] :=
+  (smul : α → β → β)
+
+  instance semiring.to_module (α) [semiring α] : module α α := { smul := semiring.mul }
+
+  example (R) [iR : ring R] : module R R := by apply_instance
+
+  lemma neg_smul {R M} [ring R] [add_comm_group M] [module R M] (r : R) (m : M) :
+    module.smul (add_group.neg r) m = add_group.neg (module.smul r m) := sorry
+
+  -- ok
+  example {R} [iR : ring R] (r : R) (r' : R) :
+    module.smul (add_group.neg r) r' = add_group.neg (module.smul r r') := neg_smul r r'
+
+end flat
+
+namespace nested
+
+
   class module (α β : Type) [semiring α] [add_comm_monoid β] :=
   (smul : α → β → β)
   

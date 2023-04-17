@@ -1,0 +1,8 @@
+[package]
+name = "lean-multiple-inheritance"
+version = "0.1"
+lean_version = "leanprover-community/lean:3.50.3"
+path = "."
+
+[dependencies]
+mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "49b7f94aab3a3bdca1f9f34c5d818afb253b3993"}
