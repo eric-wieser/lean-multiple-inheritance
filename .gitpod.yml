@@ -1,0 +1,12 @@
+image:
+  file: .docker/gitpod/Dockerfile
+
+vscode:
+  extensions:
+    - jroesch.lean
+    - leanprover.lean4
+
+tasks:
+  - init: lake exe cache get
+  - init: leanpkg configure && leanproject get-cache --fallback=download-all
+    command: . /home/gitpod/.profile
