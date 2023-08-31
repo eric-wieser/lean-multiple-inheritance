@@ -1,4 +1,4 @@
-import tactic
+import tactic.show_term
 
 /-! ### Native spelling of flat structures -/
 
