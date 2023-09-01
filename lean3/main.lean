@@ -143,6 +143,11 @@ namespace nested
   example {R} [iR : ring R] (r : R) (r' : R) :
     module.smul (add_group.neg r) r' = add_group.neg (module.smul r r') := neg_smul r r'
 
+  -- ...because of the following non-commutating path
+  example {R} [iR : ring R] :
+    (semiring.to_add_comm_monoid : add_comm_monoid R) = add_comm_group.to_add_comm_monoid :=
+  rfl
+
 end nested
 
 /-! Unfortunately figure 4 in the paper is incorrect; this demonstrates that the highlighted square
